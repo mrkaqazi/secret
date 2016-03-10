@@ -980,11 +980,11 @@ local function run(msg, matches)
     if matches[1] == 'ست عکس' and is_momod(msg) then
       data[tostring(msg.to.id)]['settings']['set_photo'] = 'waiting'
       save_data(_config.moderation.data, data)
-      return 'Please send me new group photo now'
+      return 'زود عکس جدید گروه رو برام بفرست'
     end
     if matches[1] == 'پروموت' and not matches[2] then
       if not is_owner(msg) then
-        return "Only the owner can prmote new moderators"
+        return "فقط ادمین گروه میتونه یک نفر رو کمک ادمین کنه"
       end
       if type(msg.reply_id)~="nil" then
           msgr = get_message(msg.reply_id, promote_by_reply, false)
@@ -995,7 +995,7 @@ local function run(msg, matches)
         return
       end
       if not is_owner(msg) then
-        return "Only owner can promote"
+        return "فقط ادمین گروه میتونه یک نفر رو کمک ادمین کنه"
       end
 	local member = matches[2]
         savelog(msg.to.id, name_log.." ["..msg.from.id.."] promoted @".. member)
@@ -1010,7 +1010,7 @@ local function run(msg, matches)
     end
     if matches[1] == 'دیموت' and not matches[2] then
       if not is_owner(msg) then
-        return "Only the owner can demote moderators"
+        return "فقط ادمین گروه میتونه مقام یک کم ادمین رو بگیره"
       end
       if type(msg.reply_id)~="nil" then
           msgr = get_message(msg.reply_id, demote_by_reply, false)
@@ -1021,7 +1021,7 @@ local function run(msg, matches)
         return
       end
       if not is_owner(msg) then
-        return "Only owner can demote"
+        return "فقط ادمین گروه میتونه مقام یک کمک ادمین رو بگیره"
       end
       if string.gsub(matches[2], "@", "") == msg.from.username and not is_owner(msg) then
         return "You can't demote yourself"
@@ -1154,7 +1154,7 @@ local function run(msg, matches)
     
     if matches[1] == 'نیو لینک' and not is_realm(msg) then
       if not is_momod(msg) then
-        return "For moderators only!"
+        return "فقط برای کمک ادمین ها و ادمین گروه"
       end
       local function callback (extra , success, result)
         local receiver = 'chat#'..msg.to.id
@@ -1171,7 +1171,7 @@ local function run(msg, matches)
     end
     if matches[1] == 'لینک' then
       if not is_momod(msg) then
-        return "For moderators only!"
+        return "فقط برای کمک ادمین ها و ادمین گروه"
       end
       local group_link = data[tostring(msg.to.id)]['settings']['set_link']
       if not group_link then 
@@ -1182,7 +1182,7 @@ local function run(msg, matches)
     end
 	if matches[1] == 'لینک پیوی' then
       if not is_momod(msg) then
-        return "For moderators only!"
+        return "فقط برای کمک ادمین ها و ادمین گروه"
       end
       local group_link = data[tostring(msg.to.id)]['settings']['set_link']
       if not group_link then 
@@ -1193,7 +1193,7 @@ local function run(msg, matches)
     end
     if matches[1] == 'ست ادمین' and matches[2] then
       if not is_owner(msg) then
-        return "For owner only!"
+        return "فقط برای ادمین گروه"
       end
       data[tostring(msg.to.id)]['set_owner'] = matches[2]
       save_data(_config.moderation.data, data)
@@ -1203,7 +1203,7 @@ local function run(msg, matches)
     end
     if matches[1] == 'ست ادمین' and not matches[2] then
       if not is_owner(msg) then
-        return "only for the owner!"
+        return "فقط برای ادمین گروه"
       end
       if type(msg.reply_id)~="nil" then
           msgr = get_message(msg.reply_id, setowner_by_reply, false)
@@ -1220,7 +1220,7 @@ local function run(msg, matches)
     if matches[1] == 'ست ادمین گروه' then
       local receiver = "chat#id"..matches[2]
       if not is_admin(msg) then
-        return "For admins only!"
+        return "فقط برای ادمین بات"
       end
       data[tostring(matches[2])]['set_owner'] = matches[3]
       save_data(_config.moderation.data, data)
@@ -1230,7 +1230,7 @@ local function run(msg, matches)
     end
     if matches[1] == 'حساسیت' then 
       if not is_momod(msg) then
-        return "For moderators only!"
+        return "فقط برای کمک ادمین ها و ادمین"
       end
       if tonumber(matches[2]) < 3 or tonumber(matches[2]) > 20 then
         return "Wrong number,range is [3-20]"
@@ -1239,22 +1239,22 @@ local function run(msg, matches)
       data[tostring(msg.to.id)]['settings']['flood_msg_max'] = flood_max
       save_data(_config.moderation.data, data)
       savelog(msg.to.id, name_log.." ["..msg.from.id.."] set flood to ["..matches[2].."]")
-      return 'Group flood has been set to '..matches[2]
+      return 'حساسیت به اسپم تغیر داد شد به '..matches[2]
     end
     if matches[1] == 'پاک کردن' then
       if not is_owner(msg) then
-        return "Only owner can clean"
+        return "فقط ادمین گروه میتونه پاک کنه"
       end
       if matches[2] == 'اعضا' then
         if not is_owner(msg) then
-          return "Only admins can clean members"
+          return "فقط ادمین گروه میتونه اعضا رو پاک کنه"
         end
         local receiver = get_receiver(msg)
         chat_info(receiver, cleanmember, {receiver=receiver})
       end
       if matches[2] == 'کمک ادمین' then
         if next(data[tostring(msg.to.id)]['moderators']) == nil then --fix way
-          return 'No moderator in this group.'
+          return 'در این گروه هیچ کمک ادمینی نیست.'
         end
         local message = '\nList of moderators for ' .. string.gsub(msg.to.print_name, '_', ' ') .. ':\n'
         for k,v in pairs(data[tostring(msg.to.id)]['moderators']) do
