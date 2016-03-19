@@ -3,7 +3,7 @@ local function run(msg, matches)
 		local response = matches[3]
 		send_large_msg("chat#id"..matches[2], response)
 	end
-	if matches[1] == 'broadcast' then
+	if matches[1] == 'فرستادن' then
 		if is_sudo(msg) then -- Only sudo !
 			local data = load_data(_config.moderation.data)
 			local groups = 'groups'
@@ -19,11 +19,7 @@ end
 return {
   patterns = {
     "^(فرستادن) +(.+)$",
-    "^[!/](bc) (%d+) (.*)$"
+    "^(bc) (%d+) (.*)$"
   },
   run = run
 }
---Copyright and edit; @behroozyaghi
---Persian Translate; @behroozyaghi
---ch : @nod32team
---کپی بدون ذکر منبع حرام است
