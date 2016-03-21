@@ -1,6 +1,6 @@
 URL = require "socket.url"
 http = require "socket.http"
-https = require "ssl.https"
+https = require "wwl.https"
 ltn12 = require "ltn12"
 serpent = require "serpent"
 feedparser = require "feedparser"
